@@ -74,48 +74,56 @@ In order to understing the learn to rank performance, it was plotted the cumulat
 
 The cumulative gain plot shows us the percentage of the sample (customers) on the x-axis and the percentage cumulative gain (response) in the y-axis. In other words, it shows us the cumulative gain percentage of custormers that answered yes to the survey when ordered by propensity score achived with the model from highest to lowest propensity (i.e. in the XGBoost Classifier model, the first 20% of customers listed by propensity score corresponds to almost 60% of customers that answered yes in the survey).
 
+<img src="https://github.com/felipefvasconcelos/insurance_cross_sell/blob/main/assets/acumulative_gain.png" width="1200" height="500"><br>
 
+The lift curve plot show us the percentage of the sample (customers) on the x-axis and the lift (propensity score / percentage of customers) in the y-axis. In other words, it shows us how better the model is compared to the state of art (random sortment) (i.e. in the XGBoost Classifier model, using the propensity score achived with the model, if we reach 20% of the customer we will find almost 3x more customer that answered yes to th survey than using random sortment.
 
+<img src="https://github.com/felipefvasconcelos/insurance_cross_sell/blob/main/assets/lift_curve.png" width="1200" height="500"><br>
 
-The image below shows values of MAE (Mean Absolute Error), MAPE (Mean Absolute Percentage Error) and RMSE (Root-Mean_Square Deviation) for each model after performing Cross-Validation.
+Also, we use K-top metrics to avaluate the performance and compare the results after doing the cross-validation.
 
-<img src="https://github.com/felipefvasconcelos/Rossman_Sales_Prediction/blob/main/assets/cross_val.png" width="500" height="150"><br>
+Before cross-validation:
 
-Even though Random Forest Regressor model presented a slightly better performance, it was decided to proceed with XGBoost Regressor model because of the signicant lower memory and time consuming.
+<img src="https://github.com/felipefvasconcelos/insurance_cross_sell/blob/main/assets/k_top_metrics.png" width="370" height="200"><br>
 
-After running hyperparameter fine tuning for XGBoost Regressor model, the final performance was found as showed below.
+After cross-validation
 
-<img src="https://github.com/felipefvasconcelos/Rossman_Sales_Prediction/blob/main/assets/final_performance.png" width="300" height="50"><br>
+<img src="https://github.com/felipefvasconcelos/insurance_cross_sell/blob/main/assets/k_top_metrics_cv.png" width="400" height="200"><br>
 
-Error (real sales - prediction) scatter plot:
-
-<img src="https://github.com/felipefvasconcelos/Rossman_Sales_Prediction/blob/main/assets/error.png" width="600" height="275"><br>
+Based on the performance and overall memory usage, it was chosen the Gradient Boosting Classifier model for production
 
 ## 7. Business Results
 
-According to the model, in the next six weeks all stores together will sell R$ 285,047,136.00. Assuming the error found after running fine tuning, we can assume that the stores will sell R$ 284,322,899.11 in the worst case scenario and R$ 285,771,403.20 in the best case scenario.
+### 7.1. Top Insights
+* Focus on customers older than 36 years. 18% of customers older than 36 are interested in buying insurance, and only 7% of customers younger than 36 are interested.
 
-<img src="https://github.com/felipefvasconcelos/Rossman_Sales_Prediction/blob/main/assets/Scenarios.png" width="300" height="150"><br>
+* Focus on customers that had vehicle damaged. 24% of customers with damaged vehicle are interested vs 0.5% of customers whitout damage vehicle.
 
-## 8. Telegram Bot
+* Fucus on customers with vehicle older than 1 year. 29% of customers with vechicles older than 2 years and 17% of customers with vehicle age between 1 and 2 year are interested in buying insurance, while only 4% of customer with vehicle newer than 1 year are interested. PS: number of customers with vehicles within 1 to 2 years old is much greater.
 
-It was created a Telegram Bot in order to easily accesss predictions for individual stores by texting the store number you want the see the sales prediction. Bot can be accessed at https://t.me/rossmann_ffv_bot.
+### 7.2. Inferred Sales Results
+* Considering a base of 68,600 customers, if you make 20,000 calls (29.15% of your base) you will reach 76.30% of customers interested. 
 
-## 9. Conclusion
+* Supposing each auto insurance is a 2,000 sale, if using random model (choose customer randomly) for 20,000 calls we would reach 29.65% of interested cusmoter, corresponding to 4,968,000 in sales.
 
-The objective of this project was to simulate a real life business problem and address the solution using Machine Learning models. By using CRISP-DS methodoly, it was possible to build an organized structure in order to understand the business problem, analyse the data, test models and finally provide an accurate sales predictions for the stores. 
+* By using the Gradient Boosting model, with the same 20,000 calls we would reach 76.30% of interested customers, corresponding to 12,826,962 in sales.
 
-## 10. Next Steps
+* In other words, we would sell 7,858,962 more than calling customers randomly. This is an improved performance in a factor of 2.57.
+
+## 8. Conclusion
+
+The objective of this project was to simulate a real life business problem and address the solution using Machine Learning models. By using CRISP-DS methodoly, it was possible to build an organized structure in order to understand the business problem, analyse the data, test models and finally provide an accurate ranked list to maximize reaching customers with greater probability of buying the new product. 
+
+## 9. Next Steps
 Next step would be run a second cycle for CRISP-DM proccess with focus on following points:
 * Create new and more relevant parameter at feature engineering.
 * Create more hypotesis in order to find more relevant variables.
 * Test more Machine Learning models.
-* Improve messages in the Telegram Bot.
+* Test different methods to deal with imbalanced data.
 <br>
 
 ---
 ## References:
 
-* Datasets Rossmann Store Sales from [Kaggle](https://www.kaggle.com/competitions/rossmann-store-sales/data)
-* Variables meaning on [Kaggle discussion](https://www.kaggle.com/competitions/rossmann-store-sales/overview)
+* Datasets from [Kaggle](https://www.kaggle.com/datasets/anmolkumar/health-insurance-cross-sell-prediction)
 * Blog [Seja um Data Scientist](https://sejaumdatascientist.com/os-5-projetos-de-data-science-que-fara-o-recrutador-olhar-para-voce/)
